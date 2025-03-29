@@ -5,6 +5,8 @@ import openai
 from typing import Optional
 import json
 from pypdf import PdfReader
+import os
+
 app = FastAPI()
 
 # Configure CORS with exact frontend URL
@@ -23,10 +25,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+api_key = os.environ.get('apikey')
 
 
 client = openai.OpenAI(
-    api_key="sk-ENIRLVIVfmBfzXtVfOQhVw",
+    api_key="api_key",
     base_url="https://api.ailab.ge"
 )
 
