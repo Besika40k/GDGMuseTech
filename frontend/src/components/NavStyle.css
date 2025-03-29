@@ -1,0 +1,44 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #F4F4F4;
+    color: black;
+    border-radius: 20px;
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}  
+.right-section {
+    display: flex;
+    gap: 1rem;
+}
+  
+.icon-button {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: black;
+    outline: none;  /* Add this line to remove the outline */
+}
+
+.icon-button:active {
+    border: none;
+}
+
+.icon-button:hover {
+    border: red;
+}
+
+.icon-button:focus {
+    outline: none;  /* Add this line to remove focus outline */
+    border: none;
+}
+
+.icon-button:visited {
+    border: none;
+}

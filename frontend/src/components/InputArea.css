@@ -1,0 +1,95 @@
+.input-area {
+  width: 100%;
+  padding: 20px 5px 20px 0px;
+  background-color: transparent;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.upload-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.upload-button:hover {
+  background-color: #e8e8e8;
+}
+
+.text-input {
+  flex: 1;
+  height: 30%;
+  padding: 8px 0px 0px 8px;
+  background-color: #F4F4F4;
+  border-radius: 20px;
+  border: none;
+  resize: none;
+  color: black;
+  font-size: 15px;
+  font-family: "Noto Serif Georgian", serif;
+  padding-left: 10px;
+}
+.text-input::placeholder {
+  color: gray;
+  font-style: italic;
+  font-size: 14px;
+}
+
+
+.text-input:active, .text-input:focus, .text-input:hover{
+  background-color: #e4e4e4;
+  border: none;
+  outline: none;
+}
+
+/* Style the scrollbar */
+.text-input::-webkit-scrollbar {
+  width: 8px;
+}
+
+.text-input::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2spx;
+}
+
+.text-input::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.text-input::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.submit-button {
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.3s ease;
+}
+
+.submit-button:hover {
+  transform: translateX(5px);
+}
+.submit-button:active, .submit-button:focus{
+  border: none;
+  outline: none;
+}
