@@ -1,5 +1,4 @@
 fastapi
 uvicorn
-react-icons
 react-markdown
 pypdf
