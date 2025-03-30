@@ -64,7 +64,8 @@ async def handle_submission(
         for i in categories_dict.items():
             if i[0] != i[1]:
                 dashlili += f"{i[0]}: {i[1]}\n"
-        
+        if dashlili != "":
+            dashlili = f"დამატებითი ინფორმაცია: {dashlili}"
         # Read PDF file
         if pdf:
             reader = PdfReader(pdf.file)
@@ -76,13 +77,14 @@ async def handle_submission(
                     break
                 page = reader.pages[i]
                 pdf_text += page.extract_text()
+            pdf_text = f"ამ pdf ის ტექსტის გათვალისწინებით: {pdf_text}"
         else:
             pdf_text = ""
         # Send user input to AI model
         response = client.chat.completions.create(
             model="kona",
             messages=[
-                {"role": "user", "content": f"დაამუშავე შემდეგი მოთხოვნა:\n\ტექსტი: {text}\n კატეგორიები: {dashlili} ამ pdf ის ტექსტის გათვალისწინებით: {pdf_text}"}
+                {"role": "user", "content": f"დაამუშავე შემდეგი მოთხოვნა:\n\ტექსტი: {text}\n {dashlili} {pdf_text}"}
             ]
         )
         # Store AI response globally

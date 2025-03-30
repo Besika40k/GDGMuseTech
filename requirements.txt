@@ -4,3 +4,4 @@ pypdf
 fastapi
 openai
 python-multipart
+gunicorn
