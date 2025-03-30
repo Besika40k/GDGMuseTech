@@ -2,3 +2,5 @@ fastapi
 uvicorn
 react-markdown
 pypdf
+fastapi
+openai

@@ -6,6 +6,11 @@ from typing import Optional
 import json
 from pypdf import PdfReader
 import os
+from dotenv import load_dotenv, find_dotenv
+
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
+API_KEY = os.environ.get('API_KEY')
 
 app = FastAPI()
 
@@ -25,11 +30,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-api_key = os.environ.get('apikey')
-
 
 client = openai.OpenAI(
-    api_key="api_key",
+    api_key=API_KEY,
     base_url="https://api.ailab.ge"
 )
 
