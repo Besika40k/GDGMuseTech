@@ -8,9 +8,8 @@ from pypdf import PdfReader
 import os
 from dotenv import load_dotenv, find_dotenv
 
-dotenv_path = find_dotenv()
-load_dotenv(dotenv_path)
-API_KEY = os.environ.get('API_KEY')
+load_dotenv(find_dotenv())
+API_KEY = os.getenv('API_KEY')
 
 app = FastAPI()
 
