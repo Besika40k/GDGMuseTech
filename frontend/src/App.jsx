@@ -57,7 +57,7 @@ function App() {
         categories: categoryChoices
       });
   
-      const response = await fetch("https://gdgmusetechback.onrender.com/api/submit", {
+      const response = await fetch("http://127.0.0.1:8000/api/submit", {
         method: "POST",
         body: formData
       });
