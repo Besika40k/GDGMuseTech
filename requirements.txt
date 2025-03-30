@@ -5,3 +5,4 @@ fastapi
 openai
 python-multipart
 gunicorn
+python-dotenv
