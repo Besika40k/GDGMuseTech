@@ -41,7 +41,6 @@ latest_ai_response = {"message": "No response yet"}
 
 @app.get("/api/response")
 async def get_ai_response():
-    print(latest_ai_response)
     return latest_ai_response
 
 @app.post("/api/submit")

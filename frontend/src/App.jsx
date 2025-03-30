@@ -57,7 +57,7 @@ function App() {
         categories: categoryChoices
       });
   
-      const response = await fetch("https://gdgmusetechback.onrender.com", {
+      const response = await fetch("https://gdgmusetechback.onrender.com/api/submit", {
         method: "POST",
         body: formData
       });
