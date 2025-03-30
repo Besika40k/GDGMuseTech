@@ -9,7 +9,7 @@ import os
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
-API_KEY = os.getenv('API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 app = FastAPI()
 
@@ -31,7 +31,7 @@ app.add_middleware(
 
 
 client = openai.OpenAI(
-    api_key=API_KEY,
+    api_key=OPENAI_API_KEY,
     base_url="https://api.ailab.ge"
 )
 
