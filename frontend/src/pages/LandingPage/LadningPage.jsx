@@ -3,18 +3,21 @@ import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 import Cookies from "js-cookie";
 import companyData from "../../utils/companyData.json";
-
+import { useContext } from "react";
+import { LanguageContext } from "../../contexts/languageContext";
 const LandingPage = () => {
   const navigate = useNavigate();
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [interviewLanguage, setInterviewLanguage] = useState("");
+  const { language, setLanguage } = useContext(LanguageContext);
+
   const [position, setPosition] = useState("");
   const [company, setCompany] = useState("");
   const [selectedCompanyUrl, setSelectedCompanyUrl] = useState("");
 
   const programmingLanguages = ["JavaScript", "Python", "Java", "C++", "C#"];
 
-  const interviewLanguages = ["English", "Georgian", "Polish"];
+  const interviewLanguages = ["English", "Georgian", "Russian"];
 
   const developmentPositions = [
     "Frontend Developer",
@@ -83,6 +86,7 @@ const LandingPage = () => {
     console.log("Response from backend:", data);
 
     if (res.ok && data.message === "Data stored") {
+      setLanguage(interviewLanguage);
       // Navigate to HomePage on success
       navigate("/interview");
     } else {

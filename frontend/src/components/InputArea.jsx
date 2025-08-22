@@ -1,7 +1,16 @@
 import { FaFileUpload } from "react-icons/fa";
 import "./InputArea.css";
+import { useContext } from "react";
+import { LanguageContext } from "../contexts/languageContext";
 
 const InputArea = ({ message, setMessage, handleFileUpload }) => {
+  const { language, setLanguage } = useContext(LanguageContext);
+  const input_message = {
+    English: "Enter your answer here",
+    Georgian: "შეიყვანეთ თქვენი პასუხი აქ",
+    Russian: "Введите ваш ответ здесь",
+  };
+
   return (
     <div className="input-area">
       <div className="input-container">
@@ -40,7 +49,7 @@ const InputArea = ({ message, setMessage, handleFileUpload }) => {
 
         <textarea
           className="text-input"
-          placeholder="შეიყვანეთ თქვენი მოთხოვნა აქ..."
+          placeholder={input_message[language]}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />

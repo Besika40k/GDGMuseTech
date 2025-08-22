@@ -9,6 +9,15 @@ import os
 from dotenv import load_dotenv, find_dotenv
 from typing import Union
 
+
+terminationMessage = {
+    "English": "Please wait, your answers are being processed.",
+    "Georgian": "გთხოვთ, მოითმინოთ, თქვენი პასუხები მუშავდება.",
+    "Russian": "Пожалуйста, подождите, ваши ответы обрабатываются."
+}
+
+
+
 load_dotenv(find_dotenv())
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
@@ -44,6 +53,7 @@ client = openai.OpenAI(
     base_url="https://generativelanguage.googleapis.com/v1beta"
 )
 
+global latest_ai_response
 latest_ai_response = {"message": "No response yet"}
 
 # Store conversation history for each user session
@@ -125,7 +135,15 @@ async def handle_submission(
         # Initialize conversation history for this session if it doesn't exist
         if session_id not in conversation_history:
             conversation_history[session_id] = []
-        
+
+        if len(conversation_history[session_id]) >= 20:
+            print("checkpoint")
+            lang = user_data.get("interviewLanguage", "English").lower()
+            message = terminationMessage.get(lang, terminationMessage["English"])
+            latest_ai_response = {"message": message}
+            return {"status": "success", "message": latest_ai_response}
+
+
         # Add user's response to history
         conversation_history[session_id].append({
             "role": "user",
@@ -189,9 +207,8 @@ Instructions:
 5. Focus on technical skills, problem-solving, or behavioral aspects
 6. don't return anything other than the interview question
 Generate your response in this format:
-Question: [Your single question here]
-
-Additional Context: [Brief explanation or hint if needed]"""
+the word "question" in {user_data.get('interviewLanguage', 'Not specified') if user_data else 'Not specified'} [the numer of question]: [Your single question here]
+"""
         
         try:
             # Use OpenAI SDK to call Gemini
@@ -218,13 +235,10 @@ Additional Context: [Brief explanation or hint if needed]"""
             })
             
             # Store AI response globally
-            global latest_ai_response
             latest_ai_response = {"message": ai_content}
-            
-            print("Cookiaaaaae data:", user_data)
-            print(f"Conversation history for session {session_id}: {len(conversation_history[session_id])} messages")
+
             return {"status": "success", "message": latest_ai_response}
-            
+                        
         except Exception as e:
             print(f"Gemini API error: {str(e)}")
             return JSONResponse(content={"status": "error", "message": f"Gemini API error: {str(e)}"}, status_code=500)
@@ -247,6 +261,90 @@ async def health_check():
 @app.get("/api/conversation-history")
 async def get_conversation_history():
     return {"conversation_history": conversation_history}
+
+
+
+# ... (existing imports and FastAPI setup) ...
+
+# This will store the final evaluation message for the front end to fetch.
+final_evaluation_response = {"message": "Final evaluation not yet available."}
+
+@app.get("/api/finalEvaluation")
+async def get_final_evaluation(request: Request):
+    """
+    Evaluates the user's performance based on the conversation history
+    and provides tips for improvement.
+    """
+    try:
+        user_data_raw = request.cookies.get("userForm")
+        if not user_data_raw:
+            return JSONResponse(content={"status": "error", "message": "User data not found in cookie."}, status_code=400)
+        
+        user_data = json.loads(user_data_raw)
+        session_id = f"{user_data.get('selectedLanguage', 'unknown')}_{user_data.get('position', 'unknown')}_{user_data.get('selectedCompanyUrl', 'unknown')}"
+        
+        # Check if conversation history exists for the session
+        if session_id not in conversation_history or not conversation_history[session_id]:
+            return JSONResponse(content={"status": "error", "message": "No conversation history found for this session."}, status_code=404)
+
+        # Build the full conversation history string for the prompt
+        full_history_prompt = "User and Assistant Conversation History:\n"
+        for msg in conversation_history[session_id]:
+            if msg["role"] == "user":
+                full_history_prompt += f"User: {msg['content']}\n"
+            elif msg["role"] == "assistant":
+                full_history_prompt += f"Assistant: {msg['content']}\n"
+        
+        # Define the prompt for the final evaluation
+        final_prompt = f"""You are an experienced and senior interviewer. Your task is to provide a comprehensive evaluation of the user's performance in the mock interview.
+
+Interview Context:
+- Programming Language: {user_data.get('selectedLanguage', 'Not specified')}
+- Position: {user_data.get('position', 'Not specified')}
+- Company: {user_data.get('selectedCompanyUrl', 'Not specified')}
+
+{full_history_prompt}
+
+Instructions for Evaluation:
+1.  **Evaluate Performance**: Provide a professional assessment of the user's strengths and weaknesses based on the entire conversation.
+2.  **Provide Tips**: Offer actionable advice and tips on how the user can improve their answers, communication style, or technical knowledge.
+3.  **Give Tricks**: Share "tricks" or advanced strategies for handling similar interview questions in the future.
+4.  **Be Comprehensive**: Your response should be a well-structured text, not just a single sentence. Use markdown for formatting (e.g., headings, bullet points, bold text) to make it easy to read.
+5.  **Language**: The evaluation must be in the interview language specified by the user: {user_data.get('interviewLanguage', 'English')}.
+6.  **Do not ask any questions. Provide the evaluation and nothing else.**
+"""
+        
+        # Call the Gemini API for the final evaluation
+        final_response_from_gemini = client.chat.completions.create(
+            model="models/gemini-2.0-flash",
+            messages=[
+                {
+                    "role": "user",
+                    "content": final_prompt
+                }
+            ],
+            max_tokens=2000,
+            temperature=0.7
+        )
+
+        ai_evaluation = final_response_from_gemini.choices[0].message.content
+        
+        # Update the global response variable to be fetched by the frontend
+        global latest_ai_response
+        latest_ai_response = {"message": ai_evaluation}
+        
+        # Clear the conversation history for the current session to start fresh
+        del conversation_history[session_id]
+
+        return {"status": "success", "message": {"message": ai_evaluation}}
+
+    except Exception as e:
+        print(f"Error during final evaluation: {str(e)}")
+        return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+
+
+
+
 
 if __name__ == "__main__":
     import uvicorn
