@@ -100,40 +100,43 @@ const LandingPage = () => {
         </header>
 
         <form className="landing-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="language-select">Programming Language *</label>
-            <select
-              id="language-select"
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
-              required
-              className="form-select"
-            >
-              <option value="">Select a programming language</option>
-              {programmingLanguages.map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className="top-div">
+            <div className="form-group half-form">
+              <label htmlFor="language-select">Programming Language *</label>
+              <select
+                id="language-select"
+                value={selectedLanguage}
+                onChange={(e) => setSelectedLanguage(e.target.value)}
+                required
+                className="form-select"
+              >
+                <option value="">Select a programming language</option>
+                {programmingLanguages.map((lang) => (
+                  <option key={lang} value={lang}>
+                    {lang}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="interview-language">Interview Language *</label>
-            <select
-              id="interview-language"
-              value={interviewLanguage}
-              onChange={(e) => setInterviewLanguage(e.target.value)}
-              required
-              className="form-select"
-            >
-              <option value="">Select interview language</option>
-              {interviewLanguages.map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </select>
+            <div className="form-group half-form">
+              <label htmlFor="interview-language">Interview Language *</label>
+              <select
+                id="interview-language"
+                value={interviewLanguage}
+                onChange={(e) => setInterviewLanguage(e.target.value)}
+                required
+                className="form-select"
+                style={{ width: "100%" }}
+              >
+                <option value="">Select interview language</option>
+                {interviewLanguages.map((lang) => (
+                  <option key={lang} value={lang}>
+                    {lang}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="form-group">
@@ -144,6 +147,7 @@ const LandingPage = () => {
               onChange={(e) => setPosition(e.target.value)}
               required
               className="form-select"
+              style={{ wdith: "100%" }}
             >
               <option value="">Select a position/role</option>
               {developmentPositions.map((pos) => (

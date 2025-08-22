@@ -13,8 +13,9 @@
   --color-bg: #ffffff;
   --color-surface: #f4f4f4;
   --color-surface-hover: #e8e8e8;
-  --color-text: #213547;
-  --color-text-muted: #666666;
+  --color-text: #001d48;
+  --color-h1-text: #001d48;
+  --color-text-muted: #6fcbdc;
   --color-card: #ffffff;
   --color-border: #e5e5e5;
   --color-scrollbar-track: #f1f1f1;
@@ -30,6 +31,8 @@
   --color-surface: #11131a;
   --color-surface-hover: #1a1d26;
   --color-text: #e6eaf2;
+  --color-h1-text: #001d48;
+
   --color-text-muted: #a0a7b4;
   --color-card: #161922;
   --color-border: #232739;

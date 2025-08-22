@@ -86,10 +86,10 @@ function HomePage() {
   return (
     <div className="HomePage">
       <div className="content-div">
-        <Categories
+        {/* <Categories
           categoryChoices={categoryChoices}
           onSelect={handleCategorySelect}
-        />
+        /> */}
 
         <div className="main-content">
           <div className="output-container">
