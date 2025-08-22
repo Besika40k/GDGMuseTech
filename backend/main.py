@@ -7,6 +7,7 @@ import json
 from pypdf import PdfReader
 import os
 from dotenv import load_dotenv, find_dotenv
+from typing import Union
 
 load_dotenv(find_dotenv())
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
@@ -14,14 +15,23 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 app = FastAPI()
 
 # Configure CORS with exact frontend URL
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=[
+#         "http://localhost:5173",
+#         "http://localhost:5173/",
+#         "http://127.0.0.1:62655",
+#         "http://127.0.0.1:62655/",
+#         "http://0.0.0.0:8000",
+#     ],
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5173/",
-        "http://127.0.0.1:8000",
-        "http://127.0.0.1:8000/"
-    ],
+    allow_origins=["*"],  # Allow all for testing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,10 +40,11 @@ app.add_middleware(
 
 client = openai.OpenAI(
     api_key=OPENAI_API_KEY,
-    base_url="https://api.ailab.ge"
 )
 
 latest_ai_response = {"message": "No response yet"}
+
+
 
 @app.get("/api/response")
 async def get_ai_response():
@@ -41,9 +52,9 @@ async def get_ai_response():
 
 @app.post("/api/submit")
 async def handle_submission(
-    pdf: Optional[UploadFile] = File(None),
     text: str = Form(...),
-    categories: str = Form(...)
+    categories: str = Form(...),
+    pdf: Union[UploadFile, None] = File(default=None),
 ):
     try:
         # Parse JSON categories
@@ -54,7 +65,6 @@ async def handle_submission(
         print(f"Text: {text}")
         print(f"PDF: {pdf.filename if pdf else 'No PDF'}")
         print(f"Categories: {categories_dict}")
-        print(categories_dict)
         # Decompose Dict data
         dashlili = ""
         for i in categories_dict.items():
@@ -62,29 +72,40 @@ async def handle_submission(
                 dashlili += f"{i[0]}: {i[1]}\n"
         if dashlili != "":
             dashlili = f"დამატებითი ინფორმაცია: {dashlili}"
-        # Read PDF file
+        # Read PDF file (robust against None text)
         if pdf:
-            reader = PdfReader(pdf.file)
-            number_of_pages = len(reader.pages)
-            page = reader.pages[0]
-            pdf_text = page.extract_text()
-            for i in range(number_of_pages):
-                if len(pdf_text) > 10000:
-                    break
-                page = reader.pages[i]
-                pdf_text += page.extract_text()
-            pdf_text = f"ამ pdf ის ტექსტის გათვალისწინებით: {pdf_text}"
+            try:
+                reader = PdfReader(pdf.file)
+                number_of_pages = len(reader.pages)
+                pdf_text = ""
+                for i in range(number_of_pages):
+                    if len(pdf_text) > 10000:
+                        break
+                    page = reader.pages[i]
+                    page_text = page.extract_text() or ""
+                    pdf_text += page_text
+                if pdf_text:
+                    pdf_text = f"ამ pdf ის ტექსტის გათვალისწინებით: {pdf_text}"
+            except Exception as pdf_err:
+                print(f"PDF parsing error: {str(pdf_err)}")
+                pdf_text = ""
         else:
             pdf_text = ""
+
+        if not OPENAI_API_KEY:
+            return JSONResponse(content={"status": "error", "message": "OPENAI_API_KEY is not set"}, status_code=400)
         # Send user input to AI model
-        response = client.chat.completions.create(
-            model="kona",
-            messages=[
-                {"role": "user", "content": f"დაამუშავე შემდეგი მოთხოვნა:\n\ტექსტი: {text}\n {dashlili} {pdf_text}"}
-            ]
-        )
+    
+        # response = client.responses.create(
+        #     model="gpt-4o-mini",
+        #     input= f"do something man",
+        #     store=True,
+        # )
+        # დაამუშავე შემდეგი მოთხოვნა:\n\ტექსტი: {text}\n {dashlili} {pdf_text}
         # Store AI response globally
-        latest_ai_response = {"message": response.choices[0].message.content} 
+        global latest_ai_response
+        # latest_ai_response = {"message": response.choices[0].message.content} 
+        latest_ai_response = {"message": "some text"} 
         return {"status": "success", "message": latest_ai_response}
 
     except Exception as e:
