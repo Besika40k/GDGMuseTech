@@ -29,7 +29,7 @@ const Nav = () => {
     <nav className="navbar">
       <div className="logo">
         {/* Replace with your logo */}
-        <span>MuseTech</span>
+        <span>AIeti</span>
       </div>
 
       <div className="right-section">
