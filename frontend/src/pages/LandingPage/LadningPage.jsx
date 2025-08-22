@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 import Cookies from "js-cookie";
+import companyData from "../../utils/companyData.json";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -9,32 +10,65 @@ const LandingPage = () => {
   const [interviewLanguage, setInterviewLanguage] = useState("");
   const [position, setPosition] = useState("");
   const [company, setCompany] = useState("");
+  const [selectedCompanyUrl, setSelectedCompanyUrl] = useState("");
 
   const programmingLanguages = ["JavaScript", "Python", "Java", "C++", "C#"];
 
   const interviewLanguages = ["English", "Georgian", "Polish"];
 
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     console.log("Form submitted:", {
-  //       selectedLanguage,
-  //       interviewLanguage,
-  //       position,
-  //       company,
-  //     });
-  //     // Handle form submission logic here
-  //   };
+  const developmentPositions = [
+    "Frontend Developer",
+    "Backend Developer",
+    "Full Stack Developer",
+    "Software Engineer",
+    "Senior Software Engineer",
+    "Lead Developer",
+    "DevOps Engineer",
+    "Site Reliability Engineer (SRE)",
+    "Data Scientist",
+    "Data Engineer",
+    "Machine Learning Engineer",
+    "AI Engineer",
+    "Mobile Developer (iOS)",
+    "Mobile Developer (Android)",
+    "React Developer",
+    "Vue.js Developer",
+    "Angular Developer",
+    "Node.js Developer",
+    "Python Developer",
+    "Java Developer",
+    "C# Developer",
+    ".NET Developer",
+    "PHP Developer",
+    "Ruby Developer",
+    "Go Developer",
+    "Rust Developer",
+    "Systems Engineer",
+    "Cloud Engineer",
+    "Security Engineer",
+    "QA Engineer",
+    "Test Automation Engineer",
+    "UI/UX Developer",
+    "Game Developer",
+    "Embedded Systems Engineer",
+    "Blockchain Developer",
+    "Technical Lead",
+    "Architecture Engineer",
+    "Database Administrator",
+    "Database Developer",
+  ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
       selectedLanguage,
       interviewLanguage,
       position,
-      company,
+      selectedCompanyUrl,
     };
     // Save to cookies
     Cookies.set("userForm", JSON.stringify(formData), { expires: 7 });
-
+    console.log(formData, "aaaaaaaaaaaaaaa");
     // Send to backend
     const res = await fetch("http://localhost:8000/api/submitForm", {
       method: "POST",
@@ -66,66 +100,114 @@ const LandingPage = () => {
         </header>
 
         <form className="landing-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="language-select">Programming Language *</label>
-            <select
-              id="language-select"
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
-              required
-              className="form-select"
-            >
-              <option value="">Select a programming language</option>
-              {programmingLanguages.map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className="top-div">
+            <div className="form-group half-form">
+              <label htmlFor="language-select">Programming Language *</label>
+              <select
+                id="language-select"
+                value={selectedLanguage}
+                onChange={(e) => setSelectedLanguage(e.target.value)}
+                required
+                className="form-select"
+              >
+                <option value="">Select a programming language</option>
+                {programmingLanguages.map((lang) => (
+                  <option key={lang} value={lang}>
+                    {lang}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="interview-language">Interview Language *</label>
-            <select
-              id="interview-language"
-              value={interviewLanguage}
-              onChange={(e) => setInterviewLanguage(e.target.value)}
-              required
-              className="form-select"
-            >
-              <option value="">Select interview language</option>
-              {interviewLanguages.map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </select>
+            <div className="form-group half-form">
+              <label htmlFor="interview-language">Interview Language *</label>
+              <select
+                id="interview-language"
+                value={interviewLanguage}
+                onChange={(e) => setInterviewLanguage(e.target.value)}
+                required
+                className="form-select"
+                style={{ width: "100%" }}
+              >
+                <option value="">Select interview language</option>
+                {interviewLanguages.map((lang) => (
+                  <option key={lang} value={lang}>
+                    {lang}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="form-group">
             <label htmlFor="position">Position/Role *</label>
-            <input
-              type="text"
+            <select
               id="position"
               value={position}
               onChange={(e) => setPosition(e.target.value)}
-              placeholder="e.g., Frontend Developer, Data Scientist, DevOps Engineer"
               required
-              className="form-input"
-            />
+              className="form-select"
+              style={{ wdith: "100%" }}
+            >
+              <option value="">Select a position/role</option>
+              {developmentPositions.map((pos) => (
+                <option key={pos} value={pos}>
+                  {pos}
+                </option>
+              ))}
+            </select>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="company">Company (Optional)</label>
-            <input
-              type="text"
-              id="company"
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-              placeholder="e.g., Google, Microsoft, Startup XYZ"
-              className="form-input"
-            />
-          </div>
+          {position && (
+            <div className="form-group">
+              <label>Select Company (Optional)</label>
+              <div className="company-scroll-container">
+                <div className="company-scroll">
+                  {companyData[position] ? (
+                    companyData[position].map((company, index) => (
+                      <div
+                        key={index}
+                        className={`company-logo ${
+                          selectedCompanyUrl === company[1] ? "selected" : ""
+                        }`}
+                        onClick={() => {
+                          setCompany(company[1]);
+                          setSelectedCompanyUrl(company[1]);
+                        }}
+                        title={company[1]}
+                      >
+                        <img
+                          src={company[0]}
+                          alt="Company logo"
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                          }}
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <div className="no-companies">
+                      <p>No companies available for this position</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {selectedCompanyUrl && (
+                <div className="selected-company">
+                  <p>
+                    Selected:{" "}
+                    <a
+                      href={selectedCompanyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {selectedCompanyUrl}
+                    </a>
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           <button type="submit" className="submit-btn">
             Start Interview Practice

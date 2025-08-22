@@ -37,7 +37,7 @@ function HomePage() {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleChatSubmit = async () => {
     const formData = new FormData();
 
     if (file) formData.append("pdf", file);
@@ -86,24 +86,24 @@ function HomePage() {
   return (
     <div className="HomePage">
       <div className="content-div">
-        <Categories
+        {/* <Categories
           categoryChoices={categoryChoices}
           onSelect={handleCategorySelect}
-        />
+        /> */}
 
         <div className="main-content">
           <div className="output-container">
             <div className="output-text">
               <ReactMarkdown>{aiResponse}</ReactMarkdown>
             </div>
-          </div>{" "}
+          </div>
           <div className="outer-input-container">
             <InputArea
               message={message}
               setMessage={setMessage}
               handleFileUpload={handleFileUpload}
             />
-            <button className="submit-button" onClick={handleSubmit}>
+            <button className="submit-button" onClick={handleChatSubmit}>
               <svg
                 style={{
                   minWidth: "20px",
