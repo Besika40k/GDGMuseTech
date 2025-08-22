@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import Nav from "./components/Nav";
-import "./App.css";
-import Categories from "./components/Categories";
-import InputArea from "./components/InputArea";
+import { useState } from "react";
+import Nav from "../components/Nav";
+import "./HomePage.css";
+import Categories from "../components/Categories";
+import InputArea from "../components/InputArea";
 import ReactMarkdown from "react-markdown";
 
-import categoryOptions from "./utils/categoryOptions";
+import categoryOptions from "../utils/categoryOptions";
 
-function App() {
+function HomePage() {
   // Declare states
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
@@ -30,7 +30,7 @@ function App() {
 
   const handleFileUpload = (event) => {
     const uploadedFile = event.target.files[0];
-    if (uploadedFile && uploadedFile.type === "application/pdf") {
+    if (uploadedFile && uploadedFile.type === "HomePagelication/pdf") {
       setFile(uploadedFile);
     } else {
       alert("Please upload a PDF file");
@@ -83,7 +83,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="HomePage">
       <Nav />
       <div className="content-div">
         <Categories
@@ -146,4 +146,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;

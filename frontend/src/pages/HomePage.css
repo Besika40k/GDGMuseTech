@@ -3,7 +3,7 @@
   margin: 0 auto;
   text-align: center;
 }
-.App {
+.HomePage {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -85,20 +85,20 @@
 }
 
 /*
-<div className="main-content">
-          <div className="output-container">
-            <div className="output-text">
-              <p>{aiResponse}</p>
-            </div>
-          </div>{" "}
-          <InputArea
-            message={message}
-            setMessage={setMessage}
-            handleFileUpload={handleFileUpload}
-          />
-          <button className="submit-button" onClick={handleSubmit}>
-            Submit
-          </button>
-
-
-*/
+  <div className="main-content">
+            <div className="output-container">
+              <div className="output-text">
+                <p>{aiResponse}</p>
+              </div>
+            </div>{" "}
+            <InputArea
+              message={message}
+              setMessage={setMessage}
+              handleFileUpload={handleFileUpload}
+            />
+            <button className="submit-button" onClick={handleSubmit}>
+              Submit
+            </button>
+  
+  
+  */
