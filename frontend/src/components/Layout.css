@@ -1,0 +1,17 @@
+/* Layout styles */
+.layout {
+  min-height: 100vh;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
+  align-items: center;
+}
+
+.layout .main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

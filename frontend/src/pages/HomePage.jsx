@@ -62,6 +62,7 @@ function HomePage() {
       const response = await fetch("http://localhost:8000/api/submit", {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
       console.log("Raw response:", response);
       console.log("Response status:", response.status);
@@ -84,7 +85,6 @@ function HomePage() {
 
   return (
     <div className="HomePage">
-      <Nav />
       <div className="content-div">
         <Categories
           categoryChoices={categoryChoices}

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import FastAPI, File, Form, UploadFile, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import openai
@@ -44,6 +44,23 @@ client = openai.OpenAI(
 
 latest_ai_response = {"message": "No response yet"}
 
+@app.post("/api/submitForm")
+async def submit_form(data: dict, response: Response):
+    # Save to cookie
+    response.set_cookie(
+        key="userForm",
+        value=str(data),  # could JSON.stringify but keep short here
+        httponly=False,   # allow frontend to read it too if needed
+        max_age=60*60*24*7
+    )
+    return {"message": "Data stored", "data": data}
+
+@app.get("/context")
+async def get_context(request: Request):
+    user_data = request.cookies.get("userForm")
+    if user_data:
+        return {"context": user_data}
+    return {"context": "No data stored"}
 
 
 @app.get("/api/response")
@@ -52,11 +69,16 @@ async def get_ai_response():
 
 @app.post("/api/submit")
 async def handle_submission(
+        request: Request,  # add this
+
     text: str = Form(...),
     categories: str = Form(...),
     pdf: Union[UploadFile, None] = File(default=None),
 ):
     try:
+        user_data = request.cookies.get("userForm")  # stored cookie
+        print("Cookieaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa data:", user_data)
+    
         # Parse JSON categories
         categories_dict = json.loads(categories)
 

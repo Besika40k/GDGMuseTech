@@ -1,5 +1,6 @@
 :root {
   /* Typography and base */
+  box-sizing: border-box;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -51,14 +52,16 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  justify-content: center;
-  min-width: 320px;
-  min-height: 90vh;
-  height: 100vh;
-  width: 100vw;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background: linear-gradient(
+    135deg,
+    var(--color-bg) 0%,
+    var(--color-surface) 100%
+  );
+  overflow-x: hidden;
 }
 
 h1 {
@@ -89,4 +92,17 @@ button:focus-visible {
 /* Optional hover tweak for anchors */
 a:hover {
   color: #747bff;
+}
+
+/* Layout styles */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout .main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
