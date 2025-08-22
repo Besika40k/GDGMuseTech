@@ -23,12 +23,11 @@ const Nav = () => {
         >
           {isDarkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
         </button>
-        
-        <button 
-          className="icon-button"
-        >
+        <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="icon-button p-2 rounded bg-gray-200 dark:bg-gray-800 text-black dark:text-white">
           <FaUser size={20} />
-        </button>
+          </button>
       </div>
     </nav>
   );
