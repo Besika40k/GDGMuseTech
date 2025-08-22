@@ -21,34 +21,36 @@
   white-space: nowrap;
   min-width: 40px;
   min-height: 40px;
+  color: var(--color-text);
 }
 
 .upload-button:hover {
-  background-color: #e8e8e8;
+  background-color: var(--color-surface-hover);
 }
 
 .text-input {
   flex: 1;
   height: 30%;
   padding: 8px 0px 0px 8px;
-  background-color: #F4F4F4;
+  background-color: var(--color-surface);
   border-radius: 20px;
   border: none;
   resize: none;
-  color: black;
+  color: var(--color-text);
   font-size: 15px;
   font-family: "Noto Serif Georgian", serif;
   padding-left: 10px;
 }
 .text-input::placeholder {
-  color: gray;
+  color: var(--color-text-muted);
   font-style: italic;
   font-size: 14px;
 }
 
-
-.text-input:active, .text-input:focus, .text-input:hover{
-  background-color: #e4e4e4;
+.text-input:active,
+.text-input:focus,
+.text-input:hover {
+  background-color: var(--color-surface-hover);
   border: none;
   outline: none;
 }
@@ -59,17 +61,17 @@
 }
 
 .text-input::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--color-scrollbar-track);
   border-radius: 2spx;
 }
 
 .text-input::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--color-scrollbar-thumb);
   border-radius: 4px;
 }
 
 .text-input::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--color-scrollbar-thumb-hover);
 }
 .submit-button {
   height: 30px;
@@ -78,7 +80,7 @@
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  color: white;
+  color: var(--color-text);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -89,7 +91,8 @@
 .submit-button:hover {
   transform: translateX(5px);
 }
-.submit-button:active, .submit-button:focus{
+.submit-button:active,
+.submit-button:focus {
   border: none;
   outline: none;
 }
