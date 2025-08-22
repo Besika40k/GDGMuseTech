@@ -121,7 +121,7 @@ function App() {
                 <g clipPath="url(#clip0_4_114)">
                   <path
                     d="M62.2106 34.5488L31.1053 33.8715M62.2106 34.5488L23.6357 52.098L31.1053 33.8715M62.2106 34.5488L24.4362 15.3372L31.1053 33.8715"
-                    stroke="#1E1E1E"
+                    stroke="currentColor"
                     strokeWidth="4"
                     strokeLinecap="round"
                     strokeLinejoin="round"

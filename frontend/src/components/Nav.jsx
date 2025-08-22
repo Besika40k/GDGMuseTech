@@ -1,13 +1,29 @@
-import './NavStyle.css';
-import { useState } from 'react';
-import { FaMoon, FaSun, FaUser } from 'react-icons/fa';
+import "./NavStyle.css";
+import { useEffect, useState } from "react";
+import { FaMoon, FaSun, FaUser } from "react-icons/fa";
 
 const Nav = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const stored =
+      typeof window !== "undefined" ? localStorage.getItem("theme") : null;
+    if (stored === "dark") return true;
+    if (stored === "light") return false;
+    // Fallback to prefers-color-scheme
+    if (typeof window !== "undefined" && window.matchMedia) {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    return false;
+  });
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+
+  useEffect(() => {
+    const theme = isDarkMode ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [isDarkMode]);
 
   return (
     <nav className="navbar">
@@ -15,19 +31,14 @@ const Nav = () => {
         {/* Replace with your logo */}
         <span>MuseTech</span>
       </div>
-      
+
       <div className="right-section">
-        <button 
-          className="icon-button"
-          onClick={toggleDarkMode}
-        >
+        <button className="icon-button" onClick={toggleDarkMode}>
           {isDarkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
         </button>
-        <button
-        onClick={() => setDarkMode(!darkMode)}
-        className="icon-button p-2 rounded bg-gray-200 dark:bg-gray-800 text-black dark:text-white">
+        <button className="icon-button">
           <FaUser size={20} />
-          </button>
+        </button>
       </div>
     </nav>
   );
