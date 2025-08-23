@@ -128,10 +128,36 @@ function HomePage() {
   return (
     <div className="HomePage">
       <div className="content-div">
-        {/* <Categories
-          categoryChoices={categoryChoices}
-          onSelect={handleCategorySelect}
-        /> */}
+        <div
+          className="model-container"
+          style={{
+            width: "600px",
+            height: "500px",
+            border: "1px solid var(--color-border)",
+            borderRadius: "8px",
+            overflow: "hidden",
+          }}
+        >
+          <model-viewer
+            src="/AIETI3d.glb"
+            alt="AIETI 3D Model"
+            camera-controls
+            touch-action="pan-y"
+            shadow-intensity="1"
+            auto-rotate
+            camera-orbit="45deg 55deg 4m"
+            min-camera-orbit="auto auto 2m"
+            max-camera-orbit="auto auto 15m"
+            style={{ width: "100%", height: "100%" }}
+          >
+            <div className="progress-bar hide" slot="progress-bar">
+              <div className="update-bar"></div>
+            </div>
+            <button slot="ar-button" id="ar-button">
+              View in your space
+            </button>
+          </model-viewer>
+        </div>
 
         <div className="main-content">
           <div className="output-container">

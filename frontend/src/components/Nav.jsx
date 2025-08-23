@@ -28,7 +28,7 @@ const Nav = () => {
   return (
     <nav className="navbar">
       <div className="logo">
-        {/* Replace with your logo */}
+        <img src="/AIETI.svg" alt="AIETI Logo" className="nav-logo" />
         <span>AIeti</span>
       </div>
 

@@ -203,7 +203,9 @@
   scrollbar-width: thin;
   scrollbar-color: var(--color-border) transparent;
   padding-bottom: 8px;
-  padding-top: 5px;
+  padding-top: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 .company-scroll::-webkit-scrollbar {
@@ -241,14 +243,14 @@
 
 .company-logo:hover {
   border-color: #001d48;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 29, 72, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 29, 72, 0.15);
 }
 
 .company-logo.selected {
   border-color: #001d48;
   background: rgba(0, 29, 72, 0.15);
-  box-shadow: 0 6px 20px rgba(0, 29, 72, 0.4);
+  box-shadow: 0 3px 12px rgba(0, 29, 72, 0.25);
   transform: scale(1.05);
   position: relative;
 }
@@ -322,6 +324,16 @@
 }
 
 .selected-company a:hover {
+  text-decoration: underline;
+}
+
+/* Dark mode link color */
+[data-theme="dark"] .selected-company a {
+  color: #6fcbdc;
+}
+
+[data-theme="dark"] .selected-company a:hover {
+  color: #8dd8e6;
   text-decoration: underline;
 }
 
